@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriDecode - AI Food Scanner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .upload-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .file-name {
+            margin-top: 15px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .submit-btn {
+            padding: 15px 50px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-section {
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .image-preview {
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .nutrition-info {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .food-name {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .macro-item {
+            background: white;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .macro-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        .macro-value {
+            font-size: 1.3em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .macro-icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        .scan-another {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .scan-another a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 30px;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .scan-another a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span>🍽️</span> NutriDecode</h1>
+            <p>AI-Powered Food Recognition & Nutrition Analysis</p>
+        </div>
+
+        <div class="content">
+            {% if not result %}
+            <div class="upload-section">
+                <form method="POST" action="/predict" enctype="multipart/form-data" id="uploadForm">
+                    <div class="file-input-wrapper">
+                        <input type="file" name="file" id="fileInput" accept="image/*" capture="environment" required>
+                        <label for="fileInput" class="file-label">
+                            📸 Choose or Capture Image
+                        </label>
+                    </div>
+                    <div class="file-name" id="fileName"></div>
+                    <div>
+                        <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                            🔍 Analyze Food
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {% else %}
+            <div class="result-section">
+                <div class="result-grid">
+                    <div class="image-preview">
+                        <img src="{{ url_for('uploaded_file', filename=result.image) }}" alt="Uploaded Food">
+                    </div>
+                    
+                    <div class="nutrition-info">
+                        <div class="food-name">{{ result.food }}</div>
+                        
+                        <div class="macro-item">
+                            <span class="macro-label"><span class="macro-icon">🔥</span> Calories</span>
+                            <span class="macro-value">{{ result.calories }}</span>
+                        </div>
+                        
+                        <div class="macro-item">
+                            <span class="macro-label"><span class="macro-icon">💪</span> Protein</span>
+                            <span class="macro-value">{{ result.protein }} g</span>
+                        </div>
+                        
+                        <div class="macro-item">
+                            <span class="macro-label"><span class="macro-icon">🌾</span> Carbs</span>
+                            <span class="macro-value">{{ result.carbs }} g</span>
+                        </div>
+                        
+                        <div class="macro-item">
+                            <span class="macro-label"><span class="macro-icon">🥑</span> Fat</span>
+                            <span class="macro-value">{{ result.fat }} g</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scan-another">
+                    <a href="/">🔄 Scan Another Food</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    fileName.textContent = '📁 ' + this.files[0].name;
+                    submitBtn.disabled = false;
+                } else {
+                    fileName.textContent = '';
+                    submitBtn.disabled = true;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
