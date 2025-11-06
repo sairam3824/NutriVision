@@ -678,8 +678,11 @@ If you use this project in your research, please cite:
 ### Primary Contributors
 
 - **Maruri Sai Rama Linga Reddy** - Project Creator & Maintainer
-  - Email: [Msrlreddy@outlook.com](mailto:Msrlreddy@outlook.com)
   - GitHub: [@sairam3824](https://github.com/sairam3824)
+
+## Secoundary Contributors
+- **Sai Kushal V**
+  - GitHub: [@Saikushal185](https://github.com/Saikushal185)
 
 ### Acknowledgments
 
@@ -690,14 +693,5 @@ We thank the following for their contributions:
 
 ---
 
-## Contact & Support
-
-- **GitHub Repository**: [https://github.com/sairam3824/NutriDecode-1-2](https://github.com/sairam3824/NutriDecode-1-2)
-- **Issues**: Report bugs or request features via [GitHub Issues](https://github.com/sairam3824/NutriDecode-1-2/issues)
-- **Email**: [Msrlreddy@outlook.com](mailto:Msrlreddy@outlook.com)
-
----
-
-**Made with ❤️ for the nutrition and health tech community**
 
 
